@@ -361,3 +361,34 @@ The `summary` method previously reported points of interest using only unwrapped
 - Ensured consistent formatting with 2D coordinates for all points of interest, including mid-points of members for bending moment calculations.
 
 
+### 4. Future Scope for Extensions
+
+#### Structure2D Module Future Scope and Enhancements
+
+The Structure2D module, as currently implemented, has several limitations related to its test cases and overall capabilities when handling 2D structures. Below are the identified limitations and corresponding future scope to improve the module's robustness and versatility:
+
+- **Limitation: Narrow Scope of 2D Structure Test Cases**  
+  The existing test cases for the Structure2D module focus on a limited range of 2D structures, primarily simple configurations without significant complexity. They do not adequately cover a wider variety of structural layouts, such as those with multiple joints, irregular shapes, or complex geometries.  
+  **Future Scope**: Expand the test suite to include a broader range of 2D structures, such as multi-membered frames, irregular polygons, and structures with varying member orientations. This would help validate the module's ability to handle diverse architectural and engineering designs, ensuring reliability across different scenarios.
+
+- **Limitation: Uniform E, I, A Values Across Members**  
+  The module requires all members to have the same elastic modulus (E), moment of inertia (I), and cross-sectional area (A), limiting its applicability to heterogeneous 2D structures with varying material properties.  
+  **Future Scope**: Develop an implementation that dynamically assigns E, I, and A values based on the specific member receiving a load. This would enable modeling of 2D structures with diverse materials, though it may increase the complexity of reaction calculations and analysis due to piecewise property handling.
+
+- **Limitation: Restriction to Non-Branched Structures**  
+  The module is limited to structures where no joint connects more than two members, restricting its ability to model branched or intersecting 2D configurations like trusses or networks.  
+  **Future Scope**: Enhance the module to support branched structures by allowing joints to connect multiple members, enabling the analysis of complex 2D frameworks. This would require updates to the unwrapping and force distribution logic to accommodate multiple load paths.
+
+- **Limitation: Supports Only at Member Ends**  
+  Supports (e.g., pin, roller, fixed) can only be placed at the ends of members, which limits the modeling of 2D structures with intermediate supports, such as continuous beams or frames with internal constraints.  
+  **Future Scope**: Modify the module to allow support placement at any point along a member by integrating localized boundary conditions. This would involve adjusting the support application logic to handle intermediate coordinates, broadening the range of 2D structural configurations.
+
+- **Limitation: Predominantly Vertical and Horizontal Loads in Test Cases**  
+  The test cases primarily feature vertical and horizontal loads globally, despite the module's capability to handle loads at any global angle. This narrow focus does not fully explore the module's potential for angled load applications in 2D structures.  
+  **Future Scope**: Incorporate test cases with loads applied at various global angles to demonstrate the module's full load-handling capacity. This would provide practical examples for angled load scenarios, enhancing the module's utility for real-world 2D structural analysis.
+
+- **Limitation: Reliance on Float Conversions**  
+  The module frequently uses float conversions in its calculations and plotting methods, raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.  
+  **Future Scope**: Improve the module to maintain symbolic expressions where possible, leveraging advanced computational tools to avoid premature float conversions. This would enhance precision and enable symbolic solutions for complex 2D structures.
+
+These enhancements would strengthen the Structure2D module's test coverage and functionality, making it a more reliable tool for analyzing a wider range of 2D structures encountered in engineering practice.
