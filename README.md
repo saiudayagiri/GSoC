@@ -12,8 +12,19 @@
  
 
 ---
+### About Me
+
+| **Basic Information** | **Details**                     |
+|-----------------------|----------------------------------|
+| Name                  | Udayagiri Saibabu                |
+| Email                 | saibabu.udayagiri@gmail.com      |
+| University            | [Amrita School of Engineering, Amrita Vishwa Vidyapeetham, India](https://www.amrita.edu/about) |
+| GitHub Profile        | [saiudayagiri](https://github.com/saiudayagiri) |
+
 
 <center>
+
+---
 
 ## 1.Acknowledgments & Motivation
 
@@ -35,6 +46,8 @@ This project deepened my understanding of open-source contributions and GitHub w
 
 </center>
 
+---
+
 ## 2.Project Goals – Brief Summary
 
 The goal of this project was to enhance the Beam, Column, and Structure2D modules in SymPy’s `continuum_mechanics` package, improving both usability and analytical power. During the early stages, I identified several critical issues. The Beam module, though a capable one-dimensional solver, lacked validation checks. Specifically, the `apply_supports` method, when given an incorrect support type, internally mistook it for another type—resulting in an obscure index error rather than a clear exception. Meanwhile, `solve_for_reaction_loads` would raise an uninformative key index error instead of providing a helpful message when users omitted or misassigned reaction symbols.
@@ -45,7 +58,7 @@ The newly introduced Column module offers axial loading capabilities, but it lac
 
 Through out my project, I worked on several enhancements: I refined Column module that supports integration into Structure2D; improved error handling and user feedback within the Beam module; and extended Structure2D to support horizontal analysis, added methods for plotting deflection, axial force, shear, bending moment, and deformation on the full 2D structure; introduced `apply_rotation_hinges`; enhanced the summary method to show 2D coordinates along with axial and bending data at critical points, and refactored Alex’s algorithm for improved readability and code quality.
 
-
+---
 
 ## Contents
 
@@ -105,13 +118,19 @@ Through out my project, I worked on several enhancements: I refined Column modul
 
         3.3.10 Enhanced summary to show actual 2D coordinates, not just unwrapped 1D points
 
-4. **Future Scope for Extensions**
+        3.3.11 Added Test Wide Range of Test Cases Using Alex Algorithm
 
-5. **Personal Experience**
+5. **Future Scope for Extensions**
 
-6. **Conclusion**
+6. **Personal Experience**
 
-7. **References**
+7. **Conclusion**
+
+8. **Blogging**
+
+9. **References**
+
+---
 
 ## 3.Project work
 ### 3.1.1 Validation checks for `apply_support()` and `join()` methods
@@ -187,6 +206,8 @@ The `max_bending_moment`, `max_shear_force` , and `max_deflection` methods in th
 
 Following a test-driven development (TDD) workflow as recommended by my mentor, comprehensive test cases were implemented for each enhancement made to the Beam module, including `apply_support()`, `join()`, `solve_for_reaction_loads`, `point_cflexure`, `max_bending_moment`, `max_shear_force`, and `max_deflection`. These tests validated the correctness of input handling, error messages, sign change detection, zero-region handling, and multiple maxima reporting. This rigorous TDD approach significantly improved code quality, reliability, and maintainability.
 
+---
+
 ### 3.2.1 Renamed `deflection` method to `extension` for clarity
 
 The `deflection` method in the Column module was misnamed, as it calculated axial displacement rather than vertical deflection, causing confusion with the Beam module’s `deflection()` method, which correctly refers to vertical deflection. This misleading terminology made it difficult for users to understand the method’s purpose.
@@ -233,6 +254,8 @@ The Column module previously supported only the `apply_support()` method for add
 ### 3.2.4 Extended TDD-based test coverage
 
 Following a test-driven development (TDD) workflow as recommended by my mentor, comprehensive test cases were implemented for all enhancements made to the Column module, including the  `max_axial_force()`, `max_extension()`, and improved `apply_supports` functionality. These tests validated the correctness of method  maximum value calculations, manual support application, and consistency with the Beam module. This rigorous TDD approach significantly enhanced code quality, reliability, and maintainability.
+
+---
 
 ### 3.3.1 Streamlined `solve_reaction_loads`
 
@@ -360,6 +383,18 @@ The `summary` method previously reported points of interest using only unwrapped
 - Updated `_print_reaction_loads` and `_print_points_of_interest` to map unwrapped positions to their corresponding 2D coordinates using `_find_unwrapped_position`, ensuring accurate representation of the structure’s geometry.
 - Ensured consistent formatting with 2D coordinates for all points of interest, including mid-points of members for bending moment calculations.
 
+### 3.3.11 Added Test Wide Range of Test Cases Using Alex Algorithm
+
+The Structure2D module has been enhanced to include a wide range of test cases implemented using the Alex algorithm, with all test cases validated against the reference notebook. This update ensures comprehensive testing across diverse structural configurations.
+
+**Changes Made**:
+- Integrated a broad set of test cases covering various 2D structures, including multi-membered frames, irregular shapes, and complex geometries.
+- Validated each test case against the Alex algorithm, ensuring accuracy and reliability of results.
+- Referenced the implementation details in the notebook available at [https://github.com/saiudayagiri/GSoC/blob/main/Test%20cases%20using%20alex%20algorithm.ipynb](https://github.com/saiudayagiri/GSoC/blob/main/Test%20cases%20using%20alex%20algorithm.ipynb).
+
+  **Open Pull Request for all the 3.3 changes**:
+- [#28309](https://github.com/sympy/sympy/pull/28309)
+---
 
 ### 4. Future Scope for Extensions
 
@@ -405,6 +440,8 @@ The Structure2D module, as currently implemented, has several limitations relate
 
 These enhancements would strengthen the Structure2D module's test coverage and functionality, making it a more reliable tool for analyzing a wider range of 2D structures encountered in engineering practice.
 
+---
+
 #### Beam Module Future Scope and Enhancements
 
 The Beam module, as currently implemented, has several limitations that affect its usability and reliability for 1D structural analysis. Below are the identified limitations based on known issues, along with corresponding future scope to address them:
@@ -430,3 +467,40 @@ The Beam module, as currently implemented, has several limitations that affect i
   **Future Scope**: Integrate support for varying distributed loads by updating the apply_load method.
 
 These enhancements would address key issues in the Beam module, improving its error handling, accuracy, and overall functionality for 1D continuum mechanics analysis.
+
+---
+### 8. Blogging
+
+Throughout my Google Summer of Code (GSoC) 2025 journey with SymPy, I have posted a weekly blog on Medium to share my experiences, work progress, encountered issues, and valuable lessons learned. These blogs document my transition from understanding the codebase to implementing significant enhancements across the Beam, Structure2D, and Column modules. Below are the links to my weekly updates:
+
+- [My GSoC Journey: From Cosmos to Code, Stability to Structures!](https://medium.com/@saibabu.udayagiri/my-gsoc-journey-from-cosmos-to-code-stability-to-structures-6b853340468c)  
+- [Week 1: My GSoC Adventure Begins — Fixing Bugs and Learning Open Source](https://medium.com/@saibabu.udayagiri/week-1-my-gsoc-adventure-begins-fixing-bugs-and-learning-open-source-93aabe7afeae)  
+- [Week 2: My GSoC Journey — Fixing Contraflexure and Wrestling with Symbolic Puzzles](https://medium.com/@saibabu.udayagiri/week-2-my-gsoc-journey-fixing-contraflexure-and-wrestling-with-symbolic-puzzles-9fabf446af3a)  
+- [Week 3: My GSoC Journey — Symbolic Length Pitfalls, Validation Fixes, and 2D Module Integration](https://medium.com/@saibabu.udayagiri/week-3-my-gsoc-journey-symbolic-length-pitfalls-validation-fixes-and-2d-module-integration-0e0864207aaa)  
+- [Week 4: Building Robustness — Validation Enhancements, Column Module Extension & Development Lessons](https://medium.com/@saibabu.udayagiri/week-4-building-robustness-validation-enhancements-column-module-extension-development-39c5dbf1deff)  
+- [Week 5: Enhancements, Edge Cases and Endless Loops in Beam, Balancing Imbalance on Structure2D](https://medium.com/@saibabu.udayagiri/week-5-enhancements-edge-cases-and-endless-loops-in-beam-balancing-imbalance-on-structure2d-fd8ecd9fb10f)  
+- [Week 6: Fixing Bugs, Testing Smart, and Making Beam Better](https://medium.com/@saibabu.udayagiri/week-6-fixing-bugs-testing-smart-and-making-beam-better-2ebe80810d20)  
+- [Week 7: Half the Time, Double the Discovery, Steady Progress](https://medium.com/@saibabu.udayagiri/week-7-half-the-time-double-the-discovery-steady-progress-5eb51d216fcf)  
+- [Week 8: Integration, Modification, Realization](https://medium.com/@saibabu.udayagiri/week-8-integration-modification-realization-5e3f3b025b55)  
+- [Week 9: Debugging, Updates, and Extensions](https://medium.com/@saibabu.udayagiri/week-9-debugging-updates-and-extensions-7d7eab97e5aa)  
+- [Week 10: Refactor, Align, Test](https://medium.com/@saibabu.udayagiri/week-10-refactor-align-test-b566774be70a)  
+
+These blogs provide a detailed account of my progress, challenges, and growth as a contributor, offering insights into the development process and the open-source community.
+
+---
+
+### 9. References
+
+- [SymPy Documentation (for setting up the environment and basic practices with sympy)](https://docs.sympy.org/latest/index.html)
+- [SymPy Continuum Mechanics Documentation (to understand the current modules and their implementations)](http://docs.sympy.org/latest/modules/physics/continuum_mechanics/index.html#continuum-mechanics) 
+- [SymPy Pull Request #27130(to understand the state of the module and scope for contribution)](https://github.com/sympy/sympy/pull/27130)  
+- [Macaulay's Method Introduction (to understand the fundamentals of macaulay's method and singularity functions to understand the Beam Module)](https://oit.tudelft.nl/Macaulays-method/intro.html)  
+- [Alex Thesis(On which the whole structure2d is implemented for solving 2d structures)](https://oit.tudelft.nl/Macaulays-method/theses/alex.html)  
+- [Borek Thesis (to understand the implementations of structure2d)](https://oit.tudelft.nl/Macaulays-method/theses/borek.html)  
+- [Lucas Thesis (for integrating column to structure2d)](https://oit.tudelft.nl/Macaulays-method/theses/lucas.html)  
+- [SymPy Google Group Discussion(Discussions while making the proposal)](https://groups.google.com/g/sympy/c/RQHx5RXNrZI)  
+- [SkyCiv Free Beam Calculator](https://skyciv.com/free-beam-calculator/)  
+ 
+- [Egyptian E-GyanKosh Unit-4](https://egyankosh.ac.in/bitstream/123456789/31827/1/Unit-4.pdf)  
+- [Beams 3D PDF](http://homes.civil.aau.dk/jc/FemteSemester/Beams3D.pdf)  
+- [SymPy Continuum Mechanics Issues](https://github.com/sympy/sympy/issues?q=is%3Aissue%20state%3Aopen%20label%3Aphysics.continuum_mechanics&page=1)
