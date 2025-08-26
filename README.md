@@ -120,15 +120,15 @@ Through out my project, I worked on several enhancements: I refined Column modul
 
         3.3.11 Added Test Wide Range of Test Cases Using Alex Algorithm
 
-5. **Future Scope for Extensions**
+4. **Future Scope for Extensions**
 
-6. **Personal Experience**
+5. **Personal Experience**
 
-7. **Conclusion**
+6. **Conclusion**
 
-8. **Blogging**
+7. **Blogging**
 
-9. **References**
+8. **References**
 
 ---
 
@@ -467,9 +467,27 @@ The Beam module, as currently implemented, has several limitations that affect i
   **Future Scope**: Integrate support for varying distributed loads by updating the apply_load method.
 
 These enhancements would address key issues in the Beam module, improving its error handling, accuracy, and overall functionality for 1D continuum mechanics analysis.
+---
+### 5. Personal Experience
+
+When I started this Google Summer of Code (GSoC) project with SymPy, it felt like a big jump. I didn’t know much about big codebases, open-source work, or even Git—my longest code lines were still under 100, and I’d only made one small pull request to SymPy while writing my proposal. Getting picked was exciting, but it also made me wonder if I could handle it. The whole thing seemed huge at first.
+
+Those early days were like a little story of figuring things out. I’d sit there looking at the SymPy code, feeling unsure about where to start. I had my doubts—lots of them—about whether I could make sense of it all. But as I kept at it, spending time on each problem, I started to see some progress. I’d fix a bug or add a test, and it felt like I was slowly finding my way. My mentor has been patient and always there to support and review my code, and the SymPy community was great too, jumping in with ideas, suggesting simpler ways to code, and helping when I got stuck.
+
+Over these three months, it’s been a fun ride. I’ve picked up Git, learned how to work on open-source projects, and even got better at debugging. I remember spending hours chasing a bug in the Beam module, and when I finally got it, it felt like a small win. Working on the Column and Structure2D modules showed me I’ve come a long way since the start. I’m not the best compared to others—there’s still a lot left to learn, and I know I can do better—but I’m way ahead of where I was. There’s plenty more to improve, and that’s okay.
+
+Coming to lessons, the more you stick to a problem, the higher chance you get solving it. The more wider the test cases are, the better the code turns out. The more you understand the codebase and the basics, the easier it becomes to work on it. The more you put time into debugging, the more you have a chance to figure it out.
+---
+### 6. Conclusion
+
+Looking back at my Google Summer of Code (GSoC) 2025 journey with SymPy, it’s been a ride full of learning. Starting with little experience, I wasn’t sure I could do it, but I’ve come a long way since then. My mentor has been patient and always there to support and review my code, and the SymPy community has been amazing, helping with ideas and simpler ways to code whenever I needed it.
+
+Right now, the project is in a good spot with fixes to the Beam module, updates to the Column module, and new features in the Structure2D module. But there’s still some work left to do. The pending tasks include finishing 3.2.2 (adding `max_axial_force()` and `max_extension()` methods in the Column module) and 3.1.4 (fixing infinite loops in `max_bending_moment` and `max_shear_force` in the Beam module). These need better solutions, and I’d love to tackle them when I get the chance. The project still has a few loose ends, and I’m excited to help wrap them up.
+
+I’d love to keep contributing whenever I feel free and willing, giving back to the community and this project. Looking ahead, I’m eager to grow into a better version of myself, making stronger contributions. There’s a lot more to learn, and I can’t wait to see what’s next!
 
 ---
-### 8. Blogging
+### 7. Blogging
 
 Throughout my Google Summer of Code (GSoC) 2025 journey with SymPy, I have posted a weekly blog on Medium to share my experiences, work progress, encountered issues, and valuable lessons learned. These blogs document my transition from understanding the codebase to implementing significant enhancements across the Beam, Structure2D, and Column modules. Below are the links to my weekly updates:
 
@@ -489,7 +507,7 @@ These blogs provide a detailed account of my progress, challenges, and growth as
 
 ---
 
-### 9. References
+### 8. References
 
 - [SymPy Documentation (for setting up the environment and basic practices with sympy)](https://docs.sympy.org/latest/index.html)
 - [SymPy Continuum Mechanics Documentation (to understand the current modules and their implementations)](http://docs.sympy.org/latest/modules/physics/continuum_mechanics/index.html#continuum-mechanics) 
