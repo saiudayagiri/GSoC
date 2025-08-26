@@ -391,4 +391,42 @@ The Structure2D module, as currently implemented, has several limitations relate
   The module frequently uses float conversions in its calculations and plotting methods, raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.  
   **Future Scope**: Improve the module to maintain symbolic expressions where possible, leveraging advanced computational tools to avoid premature float conversions. This would enhance precision and enable symbolic solutions for complex 2D structures.
 
+- **Limitation: Limited Load Types Supported**  
+  The module currently only supports moment loads, point loads, and uniform distributed loads, lacking support for other load types such as ramp loads or varying distributed loads.  
+  **Future Scope**: Extend the load application methods to include additional load types like ramp, triangular, or arbitrary distributed loads. This would involve updating the singularity function handling in qz(x) and qx(x) equations to accommodate more complex load profiles, making the module more versatile for diverse loading conditions in 2D structures.
+
+- **Limitation: Missing Maximum Value Computation Methods**  
+  The module lacks methods to compute maximum values such as max_axial_force, max_shear_force, max_deflection, max_bending_moment, and max_extension, which are available in the Beam module for 1D analysis.  
+  **Future Scope**: Implement these maximum-finding methods in Structure2D, adapting algorithms from the Beam module to handle 2D unwrapped positions and combined axial-vertical effects. This would provide users with quick analytical insights into critical points in 2D structures.
+
+- **Limitation: Limited Types of Supports and Hinges**  
+  The module only supports three types of external supports (pin, roller, fixed) and one type of internal hinge, while 2D structures can involve a wider variety of hinges  and supports.  
+  **Future Scope**: Add support for additional hinge and support types, such as elastic springs, inclined rollers, or advanced hinged connections. This enhancement would require expanding the boundary condition logic and integrating more flexible singularity functions, enabling the module to model more realistic 2D structural behaviors.
+
 These enhancements would strengthen the Structure2D module's test coverage and functionality, making it a more reliable tool for analyzing a wider range of 2D structures encountered in engineering practice.
+
+#### Beam Module Future Scope and Enhancements
+
+The Beam module, as currently implemented, has several limitations that affect its usability and reliability for 1D structural analysis. Below are the identified limitations based on known issues, along with corresponding future scope to address them:
+
+- **Limitation: Inability to Specify Symbolic "Just Before/After" Locations**  
+  The module does not support symbolic specification of locations "just before" or "just after" another (e.g., for hinges or loads), leading to incorrect outputs in symbolic cases and reliance on numeric approximations like adding 0.01. [Issue #26639](https://github.com/sympy/sympy/issues/26639)  
+  **Future Scope**: Introduce syntax for symbolic offsets, such as "+" or "-" in location parameters, to precisely place items relative to others, improving accuracy for symbolic analyses without numeric hacks.
+
+- **Limitation: Incorrect Handling of Distributed Loads with Start > End**  
+  The module produces empty or incorrect outputs for distributed loads where the start value is greater than the end (e.g., ramp loads increasing from right to left). [Issue #28174](https://github.com/sympy/sympy/issues/28174)  
+  **Future Scope**: Update the load definition logic with conditional checks to correctly handle reverse-order starts and ends, enabling proper modeling of decreasing ramp loads.
+
+- **Limitation: No Support for Arbitrary Load Functions**  
+  The module lacks the ability to apply loads as arbitrary functions of x, restricting users to predefined load types. [Issue #15306](https://github.com/sympy/sympy/issues/15306)  
+  **Future Scope**: Add functionality to accept load expressions as functions of x, allowing for custom load profiles like polynomials or sinusoidals.
+
+- **Limitation: Incorrect Reaction Loads with Symbolic Positions**  
+  The module computes wrong reaction loads when using symbolic variables for positions, often ignoring loads position if symbols . [Issue #24439](https://github.com/sympy/sympy/issues/24439)  
+  **Future Scope**: Enhance the solver to properly evaluate symbolic positions without assuming numeric orders, ensuring correct inclusion of all loads regardless of symbolic definitions.
+
+- **Limitation: Missing Varying Distributed Load Types**  
+  The module supports only uniform distributed loads, ramp loads that ends as zero lacks built-in handling for varying types ramp starting at a value and ending at a value.  
+  **Future Scope**: Integrate support for varying distributed loads by updating the apply_load method.
+
+These enhancements would address key issues in the Beam module, improving its error handling, accuracy, and overall functionality for 1D continuum mechanics analysis.
