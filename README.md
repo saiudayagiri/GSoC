@@ -467,6 +467,8 @@ The Beam module, as currently implemented, has several limitations that affect i
   **Future Scope**: Integrate support for varying distributed loads by updating the apply_load method.
 
 These enhancements would address key issues in the Beam module, improving its error handling, accuracy, and overall functionality for 1D continuum mechanics analysis.
+
+
 ---
 ### 5. Personal Experience
 
