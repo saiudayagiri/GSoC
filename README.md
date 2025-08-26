@@ -23,41 +23,6 @@
 
 
 <center>
-
----
-
-## 1.Acknowledgments & Motivation
-
-This final report summarizes my Google Summer of Code (GSoC) project, in which I worked to enhance SymPy’s `continuum_mechanics` module by resolving issues in the Beam module, refining and reviewing Lucas's Column module, and improving the `Structure2d` module by integrating comprehensive horizontal (axial-force) analysis.
-
-I extend my deepest gratitude to my **main mentor**, **[T. van Woudenberg](https://github.com/Tom-van-Woudenberg)**, for guiding me throughout the project and dedicating significant time to code reviews and refinements. My thanks also go to **[Francesco Bonazzi](https://github.com/Upabjojr)** and **[Jason Moore](https://github.com/moorepants)** for their support as backup mentors.
-
-Special thanks to **[Oscar Benjamin](https://github.com/oscarbenjamin)** for his critical review of my implementation and invaluable suggestions for improving code quality.
-
-I am also grateful to **[Borek Saheli](https://github.com/BorekSaheli)**, who was consistently available for help and support, aiding in refining tasks, enhancing the meaningfulness of my contributions, and contributing greatly to building a robust `Structure2d` module capable of solving 2D problems in Sympy's continuum_mechanics module as part of Bachelor’s thesis.[Borek-thesis](https://oit.tudelft.nl/Macaulays-method/theses/borek.html) [PR #27130](https://github.com/sympy/sympy/pull/27130)
-
-A heartfelt thank-you to **[Lucas Verlaan](https://github.com/lfverlaan)**, whose Bachelor’s thesis *Implementation of Axial Force Analysis via Macaulay’s Method Using Python* laid the foundation for the Column module which was very useful for my project.[lucas-thesis](https://oit.tudelft.nl/Macaulays-method/theses/lucas.html) [PR #28138](https://github.com/sympy/sympy/pull/28138)
-
-I also appreciate the work of **[Alex Baudoin](https://github.com/AJDBaudoin)**, whose thesis on  extended Macaulay’s method for complex *twodimensional structures* geometries, on which  my development in the `Structure2d` module included.[Alex-thesis](https://oit.tudelft.nl/Macaulays-method/theses/alex.html)
-
-This project deepened my understanding of open-source contributions and GitHub workflows and significantly enhanced my skill set.
-
-
-
-</center>
-
----
-
-## 2.Project Goals – Brief Summary
-
-The goal of this project was to enhance the Beam, Column, and Structure2D modules in SymPy’s `continuum_mechanics` package, improving both usability and analytical power. During the early stages, I identified several critical issues. The Beam module, though a capable one-dimensional solver, lacked validation checks. Specifically, the `apply_supports` method, when given an incorrect support type, internally mistook it for another type—resulting in an obscure index error rather than a clear exception. Meanwhile, `solve_for_reaction_loads` would raise an uninformative key index error instead of providing a helpful message when users omitted or misassigned reaction symbols.
-
-The `point_cflexure` method incorrectly returned all algebraic roots instead of only those indicating actual contraflexure points, and it failed entirely in constant-zero regions. The maximum-finding methods—`max_bending_moment`, `max_shear`, and `max_deflection`—would enter infinite loops under zero constant region conditions and fail to report multiple points or intervals occuring maxima, thus undermining their usefulness for analysis purposes.
-
-The newly introduced Column module offers axial loading capabilities, but it lacks essential methods like `max_axial_force()` and `max_extension()`, limiting its analytical utility. Structure2D, intended to reduce code duplication by building upon the Beam module, currently supports only vertical analysis and lacks integration with the Column module for for full horizontal (axial) behavior. It also suffers from minimal documentation, only supports plotting of unwrapped 1D structures (instead of full 2D visuals), and its summary method only reports vertical metrics and 1D x-coordinates. Additionally, while Alex’s algorithm from his thesis is used, it has not been rewritten for clarity and test coverage is not wide to test all.
-
-Through out my project, I worked on several enhancements: I refined Column module that supports integration into Structure2D; improved error handling and user feedback within the Beam module; and extended Structure2D to support horizontal analysis, added methods for plotting deflection, axial force, shear, bending moment, and deformation on the full 2D structure; introduced `apply_rotation_hinges`; enhanced the summary method to show 2D coordinates along with axial and bending data at critical points, and refactored Alex’s algorithm for improved readability and code quality.
-
 ---
 
 ## Contents
@@ -132,6 +97,41 @@ Through out my project, I worked on several enhancements: I refined Column modul
 
 ---
 
+## 1.Acknowledgments & Motivation
+
+This final report summarizes my Google Summer of Code (GSoC) project, in which I worked to enhance SymPy’s `continuum_mechanics` module by resolving issues in the Beam module, refining and reviewing Lucas's Column module, and improving the `Structure2d` module by integrating comprehensive horizontal (axial-force) analysis.
+
+I extend my deepest gratitude to my **main mentor**, **[T. van Woudenberg](https://github.com/Tom-van-Woudenberg)**, for guiding me throughout the project and dedicating significant time to code reviews and refinements. My thanks also go to **[Francesco Bonazzi](https://github.com/Upabjojr)** and **[Jason Moore](https://github.com/moorepants)** for their support as backup mentors.
+
+Special thanks to **[Oscar Benjamin](https://github.com/oscarbenjamin)** for his critical review of my implementation and invaluable suggestions for improving code quality.
+
+I am also grateful to **[Borek Saheli](https://github.com/BorekSaheli)**, who was consistently available for help and support, aiding in refining tasks, enhancing the meaningfulness of my contributions, and contributing greatly to building a robust `Structure2d` module capable of solving 2D problems in Sympy's continuum_mechanics module as part of Bachelor’s thesis.[Borek-thesis](https://oit.tudelft.nl/Macaulays-method/theses/borek.html) [PR #27130](https://github.com/sympy/sympy/pull/27130)
+
+A heartfelt thank-you to **[Lucas Verlaan](https://github.com/lfverlaan)**, whose Bachelor’s thesis *Implementation of Axial Force Analysis via Macaulay’s Method Using Python* laid the foundation for the Column module which was very useful for my project.[lucas-thesis](https://oit.tudelft.nl/Macaulays-method/theses/lucas.html) [PR #28138](https://github.com/sympy/sympy/pull/28138)
+
+I also appreciate the work of **[Alex Baudoin](https://github.com/AJDBaudoin)**, whose thesis on  extended Macaulay’s method for complex *twodimensional structures* geometries, on which  my development in the `Structure2d` module included.[Alex-thesis](https://oit.tudelft.nl/Macaulays-method/theses/alex.html)
+
+This project deepened my understanding of open-source contributions and GitHub workflows and significantly enhanced my skill set.
+
+
+
+</center>
+
+---
+
+## 2.Project Goals – Brief Summary
+
+The goal of this project was to enhance the Beam, Column, and Structure2D modules in SymPy’s `continuum_mechanics` package, improving both usability and analytical power. During the early stages, I identified several critical issues. The Beam module, though a capable one-dimensional solver, lacked validation checks. Specifically, the `apply_supports` method, when given an incorrect support type, internally mistook it for another type—resulting in an obscure index error rather than a clear exception. Meanwhile, `solve_for_reaction_loads` would raise an uninformative key index error instead of providing a helpful message when users omitted or misassigned reaction symbols.
+
+The `point_cflexure` method incorrectly returned all algebraic roots instead of only those indicating actual contraflexure points, and it failed entirely in constant-zero regions. The maximum-finding methods—`max_bending_moment`, `max_shear`, and `max_deflection`—would enter infinite loops under zero constant region conditions and fail to report multiple points or intervals occuring maxima, thus undermining their usefulness for analysis purposes.
+
+The newly introduced Column module offers axial loading capabilities, but it lacks essential methods like `max_axial_force()` and `max_extension()`, limiting its analytical utility. Structure2D, intended to reduce code duplication by building upon the Beam module, currently supports only vertical analysis and lacks integration with the Column module for for full horizontal (axial) behavior. It also suffers from minimal documentation, only supports plotting of unwrapped 1D structures (instead of full 2D visuals), and its summary method only reports vertical metrics and 1D x-coordinates. Additionally, while Alex’s algorithm from his thesis is used, it has not been rewritten for clarity and test coverage is not wide to test all.
+
+Through out my project, I worked on several enhancements: I refined Column module that supports integration into Structure2D; improved error handling and user feedback within the Beam module; and extended Structure2D to support horizontal analysis, added methods for plotting deflection, axial force, shear, bending moment, and deformation on the full 2D structure; introduced `apply_rotation_hinges`; enhanced the summary method to show 2D coordinates along with axial and bending data at critical points, and refactored Alex’s algorithm for improved readability and code quality.
+
+
+---
+
 ## 3.Project work
 ### 3.1.1 Validation checks for `apply_support()` and `join()` methods
 
@@ -146,7 +146,7 @@ When calling `Beam.apply_support()` with an incorrect support type (e.g., "pen" 
 **Merged Pull Request**:
 - [#28194](https://github.com/sympy/sympy/pull/28194)
 
-### 3.1.2 Improved `solve_for_reaction_loads` error handling
+### 3.1.2 Improved `solve_for_reaction_loads` error handling to be more user-friendly
 
 The `solve_for_reaction_loads` method in the Beam module previously raised a generic `IndexError: tuple index out of range` for various incorrect usages, missing reaction symbols, or incorrect reaction inputs. This uninformative error, stemming from the line `solution = list((linsolve([shear_curve, moment_curve] + slope_eqs + deflection_eqs, (C3, C4) + reactions).args)[0])`, made it difficult for users to identify the specific issue, as the same error was produced regardless of the cause (e.g., no reactions provided, wrong reactions given).
 
@@ -257,7 +257,7 @@ Following a test-driven development (TDD) workflow as recommended by my mentor, 
 
 ---
 
-### 3.3.1 Streamlined `solve_reaction_loads`
+### 3.3.1 Streamlined `solve_reaction_loads`—no longer requires manual symbol input
 
 The `solve_reaction_loads` method in the Structure2D module previously required users to manually input reaction symbols, which was prone to errors and confusing, The user needs to assign variables to apply_support() method number of variables depends on the type of support or user should guess and pass symbols.
 
@@ -404,7 +404,7 @@ The Structure2D module, as currently implemented, has several limitations relate
 
 - **Limitation: Narrow Scope of 2D Structure Test Cases**  
   The existing test cases for the Structure2D module focus on a limited range of 2D structures, primarily simple configurations without significant complexity. They do not adequately cover a wider variety of structural layouts, such as those with multiple joints, irregular shapes, or complex geometries.  
-  **Future Scope**: Expand the test suite to include a broader range of 2D structures, such as multi-membered frames, irregular polygons, and structures with varying member orientations. This would help validate the module's ability to handle diverse architectural and engineering designs, ensuring reliability across different scenarios.
+  **Future Scope**: Expand the test suite to include a broader range of 2D structures, such as multi-membered frames, irregular shapes, and structures with varying member orientations. This would help validate the module's ability to handle diverse architectural and engineering designs, ensuring reliability across different scenarios.
 
 - **Limitation: Uniform E, I, A Values Across Members**  
   The module requires all members to have the same elastic modulus (E), moment of inertia (I), and cross-sectional area (A), limiting its applicability to heterogeneous 2D structures with varying material properties.  
@@ -423,12 +423,12 @@ The Structure2D module, as currently implemented, has several limitations relate
   **Future Scope**: Incorporate test cases with loads applied at various global angles to demonstrate the module's full load-handling capacity. This would provide practical examples for angled load scenarios, enhancing the module's utility for real-world 2D structural analysis.
 
 - **Limitation: Reliance on Float Conversions**  
-  The module frequently uses float conversions in its calculations and plotting methods, raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.  
+  The module frequently uses float conversions in its calculations , raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.  
   **Future Scope**: Improve the module to maintain symbolic expressions where possible, leveraging advanced computational tools to avoid premature float conversions. This would enhance precision and enable symbolic solutions for complex 2D structures.
 
 - **Limitation: Limited Load Types Supported**  
   The module currently only supports moment loads, point loads, and uniform distributed loads, lacking support for other load types such as ramp loads or varying distributed loads.  
-  **Future Scope**: Extend the load application methods to include additional load types like ramp, triangular, or arbitrary distributed loads. This would involve updating the singularity function handling in qz(x) and qx(x) equations to accommodate more complex load profiles, making the module more versatile for diverse loading conditions in 2D structures.
+  **Future Scope**: Extend the load application methods to include additional load types like ramp, triangular, or arbitrary distributed loads. This would involve updating the singularity function handling in qz(x) and qx(x) equations either in structure2d module or respective beam and column modules to accommodate more complex load profiles, making the module more versatile for diverse loading conditions in 2D structures.
 
 - **Limitation: Missing Maximum Value Computation Methods**  
   The module lacks methods to compute maximum values such as max_axial_force, max_shear_force, max_deflection, max_bending_moment, and max_extension, which are available in the Beam module for 1D analysis.  
@@ -477,7 +477,9 @@ Those early days were like a little story of figuring things out. I’d sit ther
 Over these three months, it’s been a fun ride. I’ve picked up Git, learned how to work on open-source projects, and even got better at debugging. I remember spending hours chasing a bug in the Beam module, and when I finally got it, it felt like a small win. Working on the Column and Structure2D modules showed me I’ve come a long way since the start. I’m not the best compared to others—there’s still a lot left to learn, and I know I can do better—but I’m way ahead of where I was. There’s plenty more to improve, and that’s okay.
 
 Coming to lessons, the more you stick to a problem, the higher chance you get solving it. The more wider the test cases are, the better the code turns out. The more you understand the codebase and the basics, the easier it becomes to work on it. The more you put time into debugging, the more you have a chance to figure it out.
+
 ---
+
 ### 6. Conclusion
 
 Looking back at my Google Summer of Code (GSoC) 2025 journey with SymPy, it’s been a ride full of learning. Starting with little experience, I wasn’t sure I could do it, but I’ve come a long way since then. My mentor has been patient and always there to support and review my code, and the SymPy community has been amazing, helping with ideas and simpler ways to code whenever I needed it.
@@ -487,6 +489,7 @@ Right now, the project is in a good spot with fixes to the Beam module, updates 
 I’d love to keep contributing whenever I feel free and willing, giving back to the community and this project. Looking ahead, I’m eager to grow into a better version of myself, making stronger contributions. There’s a lot more to learn, and I can’t wait to see what’s next!
 
 ---
+
 ### 7. Blogging
 
 Throughout my Google Summer of Code (GSoC) 2025 journey with SymPy, I have posted a weekly blog on Medium to share my experiences, work progress, encountered issues, and valuable lessons learned. These blogs document my transition from understanding the codebase to implementing significant enhancements across the Beam, Structure2D, and Column modules. Below are the links to my weekly updates:
