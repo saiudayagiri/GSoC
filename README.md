@@ -45,7 +45,9 @@
 
         3.1.5 Reports multiple points or intervals where maxima occur
 
-        3.1.6 Broad TDD-based test coverage for the above enhancements
+        3.1.6 Added error messages for inconsistent systems in solve_for_reaction_loads
+   
+        3.1.7 Broad TDD-based test coverage for the above enhancements
 
     3.2 Column Module Enhancements
 
@@ -85,15 +87,15 @@
 
         3.3.11 Added Test Wide Range of Test Cases Using Alex Algorithm
 
-4. **Future Scope for Extensions**
+5. **Future Scope for Extensions**
 
-5. **Personal Experience**
+6. **Personal Experience**
 
-6. **Conclusion**
+7. **Conclusion**
 
-7. **Blogging**
+8. **Blogging**
 
-8. **References**
+9. **References**
 
 ---
 
@@ -202,7 +204,26 @@ The `max_bending_moment`, `max_shear_force` , and `max_deflection` methods in th
 - [#28237](https://github.com/sympy/sympy/pull/28237)
 - [#28249](https://github.com/sympy/sympy/pull/28249)
 
-### 3.1.6 Broad TDD-based test coverage for the above enhancements
+### 3.1.6 Added error messages for inconsistent systems in solve_for_reaction_loads
+
+The solve_for_reaction_loads function previously failed to handle inconsistent systems gracefully. Whether a symbolic or numeric system was inconsistent, the method would raise an obscure KeyIndexError, leaving users confused about the cause of the failure.
+
+To address this, logic was added to use rref-based analysis: it checks each row of the coefficient matrix whose sum is zero and compares the corresponding RHS value. If the RHS is nonzero in such a row, the system is deemed inconsistent, and an appropriate error is raised before calling linsolve. This prevents the KeyIndexError and clarifies the failure mode.
+
+**Changes Made**:
+- When a system is conditionally solvable, the function now raises a specific message:
+“This system is solvable only under this condition.”
+
+- For truly inconsistent systems, it now raises:
+“Inconsistent system detected.”
+- These changes resolve issue for inconsistent system  [#28346](https://github.com/sympy/sympy/issues/28346)
+- Added testcases for both type of situations where the system is inconsistent and also for cases where the system in symbolic cases is situational consistent
+
+
+**Open Pull Request**:
+- [#28113](https://github.com/sympy/sympy/pull/28113)
+  
+### 3.1.7 Broad TDD-based test coverage for the above enhancements
 
 Following a test-driven development (TDD) workflow as recommended by my mentor, comprehensive test cases were implemented for each enhancement made to the Beam module, including `apply_support()`, `join()`, `solve_for_reaction_loads`, `point_cflexure`, `max_bending_moment`, `max_shear_force`, and `max_deflection`. These tests validated the correctness of input handling, error messages, sign change detection, zero-region handling, and multiple maxima reporting. This rigorous TDD approach significantly improved code quality, reliability, and maintainability.
 
@@ -402,41 +423,60 @@ The Structure2D module has been enhanced to include a wide range of test cases i
 
 The Structure2D module, as currently implemented, has several limitations related to its test cases and overall capabilities when handling 2D structures. Below are the identified limitations and corresponding future scope to improve the module's robustness and versatility:
 
+
 - **Limitation: Narrow Scope of 2D Structure Test Cases**  
-  The existing test cases for the Structure2D module focus on a limited range of 2D structures, primarily simple configurations without significant complexity. They do not adequately cover a wider variety of structural layouts, such as those with multiple joints, irregular shapes, or complex geometries.  
+  The existing test cases for the Structure2D module focus on a limited range of 2D structures, primarily simple configurations without significant complexity. They do not adequately cover a wider variety of structural layouts, such as those with multiple joints, irregular shapes, or complex geometries.
+  
   **Future Scope**: Expand the test suite to include a broader range of 2D structures, such as multi-membered frames, irregular shapes, and structures with varying member orientations. This would help validate the module's ability to handle diverse architectural and engineering designs, ensuring reliability across different scenarios.
 
+
 - **Limitation: Uniform E, I, A Values Across Members**  
-  The module requires all members to have the same elastic modulus (E), moment of inertia (I), and cross-sectional area (A), limiting its applicability to heterogeneous 2D structures with varying material properties.  
+  The module requires all members to have the same elastic modulus (E), moment of inertia (I), and cross-sectional area (A), limiting its applicability to heterogeneous 2D structures with varying material properties.
+  
   **Future Scope**: Develop an implementation that dynamically assigns E, I, and A values based on the specific member receiving a load. This would enable modeling of 2D structures with diverse materials, though it may increase the complexity of reaction calculations and analysis due to piecewise property handling.
 
+
 - **Limitation: Restriction to Non-Branched Structures**  
-  The module is limited to structures where no joint connects more than two members, restricting its ability to model branched or intersecting 2D configurations like trusses or networks.  
+  The module is limited to structures where no joint connects more than two members, restricting its ability to model branched or intersecting 2D configurations like trusses or networks.
+  
   **Future Scope**: Enhance the module to support branched structures by allowing joints to connect multiple members, enabling the analysis of complex 2D frameworks. This would require updates to the unwrapping and force distribution logic to accommodate multiple load paths.
 
+
 - **Limitation: Supports Only at Member Ends**  
-  Supports (e.g., pin, roller, fixed) can only be placed at the ends of members, which limits the modeling of 2D structures with intermediate supports, such as continuous beams or frames with internal constraints.  
+  Supports (e.g., pin, roller, fixed) can only be placed at the ends of members, which limits the modeling of 2D structures with intermediate supports, such as continuous beams or frames with internal constraints.
+  
   **Future Scope**: Modify the module to allow support placement at any point along a member by integrating localized boundary conditions. This would involve adjusting the support application logic to handle intermediate coordinates, broadening the range of 2D structural configurations.
 
+
 - **Limitation: Predominantly Vertical and Horizontal Loads in Test Cases**  
-  The test cases primarily feature vertical and horizontal loads globally, despite the module's capability to handle loads at any global angle. This narrow focus does not fully explore the module's potential for angled load applications in 2D structures.  
+  The test cases primarily feature vertical and horizontal loads globally, despite the module's capability to handle loads at any global angle. This narrow focus does not fully explore the module's potential for angled load applications in 2D structures.
+  
   **Future Scope**: Incorporate test cases with loads applied at various global angles to demonstrate the module's full load-handling capacity. This would provide practical examples for angled load scenarios, enhancing the module's utility for real-world 2D structural analysis.
 
+
 - **Limitation: Reliance on Float Conversions**  
-  The module frequently uses float conversions in its calculations , raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.  
+  The module frequently uses float conversions in its calculations , raising uncertainty about its ability to perform symbolic solving, which is essential for precise 2D structural analysis.
+  
   **Future Scope**: Improve the module to maintain symbolic expressions where possible, leveraging advanced computational tools to avoid premature float conversions. This would enhance precision and enable symbolic solutions for complex 2D structures.
 
+
 - **Limitation: Limited Load Types Supported**  
-  The module currently only supports moment loads, point loads, and uniform distributed loads, lacking support for other load types such as ramp loads or varying distributed loads.  
+  The module currently only supports moment loads, point loads, and uniform distributed loads, lacking support for other load types such as ramp loads or varying distributed loads.
+  
   **Future Scope**: Extend the load application methods to include additional load types like ramp, triangular, or arbitrary distributed loads. This would involve updating the singularity function handling in qz(x) and qx(x) equations either in structure2d module or respective beam and column modules to accommodate more complex load profiles, making the module more versatile for diverse loading conditions in 2D structures.
 
+
 - **Limitation: Missing Maximum Value Computation Methods**  
-  The module lacks methods to compute maximum values such as max_axial_force, max_shear_force, max_deflection, max_bending_moment, and max_extension, which are available in the Beam module for 1D analysis.  
+  The module lacks methods to compute maximum values such as max_axial_force, max_shear_force, max_deflection, max_bending_moment, and max_extension, which are available in the Beam module for 1D analysis.
+  
   **Future Scope**: Implement these maximum-finding methods in Structure2D, adapting algorithms from the Beam module to handle 2D unwrapped positions and combined axial-vertical effects. This would provide users with quick analytical insights into critical points in 2D structures.
 
+
 - **Limitation: Limited Types of Supports and Hinges**  
-  The module only supports three types of external supports (pin, roller, fixed) and one type of internal hinge, while 2D structures can involve a wider variety of hinges  and supports.  
+  The module only supports three types of external supports (pin, roller, fixed) and one type of internal hinge, while 2D structures can involve a wider variety of hinges  and supports.
+  
   **Future Scope**: Add support for additional hinge and support types, such as elastic springs, inclined rollers, or advanced hinged connections. This enhancement would require expanding the boundary condition logic and integrating more flexible singularity functions, enabling the module to model more realistic 2D structural behaviors.
+
 
 These enhancements would strengthen the Structure2D module's test coverage and functionality, making it a more reliable tool for analyzing a wider range of 2D structures encountered in engineering practice.
 
@@ -446,25 +486,35 @@ These enhancements would strengthen the Structure2D module's test coverage and f
 
 The Beam module, as currently implemented, has several limitations that affect its usability and reliability for 1D structural analysis. Below are the identified limitations based on known issues, along with corresponding future scope to address them:
 
+
 - **Limitation: Inability to Specify Symbolic "Just Before/After" Locations**  
-  The module does not support symbolic specification of locations "just before" or "just after" another (e.g., for hinges or loads), leading to incorrect outputs in symbolic cases and reliance on numeric approximations like adding 0.01. [Issue #26639](https://github.com/sympy/sympy/issues/26639)  
+  The module does not support symbolic specification of locations "just before" or "just after" another (e.g., for hinges or loads), leading to incorrect outputs in symbolic cases and reliance on numeric approximations like adding 0.01. [Issue #26639](https://github.com/sympy/sympy/issues/26639)
+  
   **Future Scope**: Introduce syntax for symbolic offsets, such as "+" or "-" in location parameters, to precisely place items relative to others, improving accuracy for symbolic analyses without numeric hacks.
 
+
 - **Limitation: Incorrect Handling of Distributed Loads with Start > End**  
-  The module produces empty or incorrect outputs for distributed loads where the start value is greater than the end (e.g., ramp loads increasing from right to left). [Issue #28174](https://github.com/sympy/sympy/issues/28174)  
+  The module produces empty or incorrect outputs for distributed loads where the start value is greater than the end (e.g., ramp loads increasing from right to left). [Issue #28174](https://github.com/sympy/sympy/issues/28174)
+  
   **Future Scope**: Update the load definition logic with conditional checks to correctly handle reverse-order starts and ends, enabling proper modeling of decreasing ramp loads.
 
+
 - **Limitation: No Support for Arbitrary Load Functions**  
-  The module lacks the ability to apply loads as arbitrary functions of x, restricting users to predefined load types. [Issue #15306](https://github.com/sympy/sympy/issues/15306)  
+  The module lacks the ability to apply loads as arbitrary functions of x, restricting users to predefined load types. [Issue #15306](https://github.com/sympy/sympy/issues/15306)
+  
   **Future Scope**: Add functionality to accept load expressions as functions of x, allowing for custom load profiles like polynomials or sinusoidals.
 
+
 - **Limitation: Incorrect Reaction Loads with Symbolic Positions**  
-  The module computes wrong reaction loads when using symbolic variables for positions, often ignoring loads position if symbols . [Issue #24439](https://github.com/sympy/sympy/issues/24439)  
+  The module computes wrong reaction loads when using symbolic variables for positions, often ignoring loads position if symbols . [Issue #24439](https://github.com/sympy/sympy/issues/24439)
+  
   **Future Scope**: Enhance the solver to properly evaluate symbolic positions without assuming numeric orders, ensuring correct inclusion of all loads regardless of symbolic definitions.
+
 
 - **Limitation: Missing Varying Distributed Load Types**  
   The module supports only uniform distributed loads, ramp loads that ends as zero lacks built-in handling for varying types ramp starting at a value and ending at a value.  
   **Future Scope**: Integrate support for varying distributed loads by updating the apply_load method.
+
 
 These enhancements would address key issues in the Beam module, improving its error handling, accuracy, and overall functionality for 1D continuum mechanics analysis.
 
